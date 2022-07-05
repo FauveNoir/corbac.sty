@@ -1,0 +1,126 @@
+%% Informations générales
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{corbac}[2022/07/05]
+
+\RequirePackage{fontspec} % Utilisation de XeTeX.
+
+\RequirePackage{polyglossia}
+\RequirePackage{xunicode}
+\RequirePackage{fontenc}
+\RequirePackage[babel=true,maxlevel=3]{csquotes} % csquotes va utiliser la langue définie dans babel et augmenter la limitation d’imbrication à 3 (LaTeX appliqué aux sciences humaines, p.46).
+\RequirePackage[unicode=true,colorlinks=true,urlcolor=magenta]{hyperref}
+\RequirePackage{graphicx}
+\RequirePackage{lettrine}
+\RequirePackage{geometry}
+\RequirePackage{lipsum}
+\RequirePackage{titlesec}
+\RequirePackage{environ}
+\RequirePackage[strict]{changepage}
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{xeCJK}
+\RequirePackage{tcolorbox}
+\RequirePackage{fancyhdr}
+\RequirePackage[thinlines]{easytable}
+\RequirePackage{xcolor}
+
+
+\ProcessOptions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setmainfont{CMU Serif}
+
+
+% Déffinitions de Polyglossia
+\setdefaultlanguage{french}
+\setotherlanguages{greek,russian,arabic}
+
+\titleformat{\chapter}[display]
+{\normalfont\large\bfseries\centering}{\centering\thechapter}{20pt}{\large}
+
+\makeatletter
+\@openrightfalse
+\makeatother
+
+
+\newcommand\sealcontainer{
+  \fcolorbox{white}{black}{
+    \hspace{-0.65em}
+    \fcolorbox{white}{black}{
+      \color{white}
+      \seal
+    }
+    \hspace{-0.7em}
+  }
+}
+
+
+
+
+\newcommand\addseal
+{
+  \def\issealasked{1}
+}
+
+\newcommand\seal{
+  \colorbox{black}%
+  {
+    \hspace{-1.0em}
+    \color{white}
+    \Large
+    \begin{TAB}(e,0.4cm,0.4cm){|cc|}{|cc|}
+      掠&夺\\
+      愿&舵
+    \end{TAB}
+    \hspace{-0.7em}
+  }
+}
+
+
+\makeatletter
+
+\newenvironment{liamchapter}[2]%
+{
+  \checkoddpage
+  \ifoddpage ~\newpage\else \null\fi
+
+  \csname @openrightfalse\endcsname
+  \chapter*{#1}
+  \def\hasl@filename{#2}
+}
+{
+  \newpage
+
+  \null\vfill
+
+  \expandafter\includegraphics[width=\textwidth]{\hasl@filename}
+
+  \null\vfill
+
+
+  {
+    \begin{textblock*}{5cm}(11cm,15.5cm) % {block width} (coords) 
+      \ifdefined\issealasked
+        \sealcontainer
+      \fi
+    \end{textblock*}
+  }
+}
+\makeatother
+
+\XeTeXcharclass`’=\XeTeXcharclass`A
+\XeTeXcharclass`…=\XeTeXcharclass`A
+\XeTeXcharclass`—=\XeTeXcharclass`A
+
+
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[CE,CO]{\thepage}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
+
+\endinput
